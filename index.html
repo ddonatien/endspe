@@ -32,18 +32,19 @@
 </head>
 
 <body>
+  <svg width="960" height="900"></svg>
   <script>
     // Feel free to change or delete any of the code you see in this editor!
-    var svg = d3.select("body").append("svg")
-      .attr("width", 960)
-      .attr("height", 500)
+    //  var svg = d3.select("body").append("svg")
+    //    .attr("width", 960)
+    //    .attr("height", 500)
 
-    var margin = {top: 60, right: 60, bottom: 60, left: 60};
+    //  var margin = {top: 60, right: 60, bottom: 60, left: 60};
 
-    var width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-            
-    var padding = {h: 15, v: 15}
+    //  var width = 960 - margin.left - margin.right,
+    //      height = 500 - margin.top - margin.bottom;
+    //          
+    //  var padding = {h: 15, v: 15}
     
     d3.csv('https://raw.githubusercontent.com/ddonatien/endspe/master/data/EU_Red_List_Simplified.csv', function(error, data) {
       if (error) {
