@@ -6,7 +6,7 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 
 Aaaaaaaaaaaaaa
 <script>
-  alert('Alert!')
+  //alert('Alert!')
   console.log("Coucou")
 </script>
 aaaaaaaaaaa
