@@ -21,106 +21,14 @@
             
     var padding = {h: 15, v: 15}
     
-    // TAILLE DE LA MATRICE. CHOISIR ENTRE 1 ET 4
-    var demiNbCols = 2
-    
-    d3.csv('https://raw.githubusercontent.com/ddonatien/endspe/master/iris.csv', function(error, data) {
+    d3.csv('https://raw.githubusercontent.com/ddonatien/endspe/master/data/EU_Red_List_Simplified.csv', function(error, data) {
       if (error) {
         console.log(error)
       }
       else {
-        data.columnsNum = data.columns.filter(d => { return +data[0][d] == data[0][d]})
-        
-        let xScale = d3.scaleBand()
-                       .domain(data.columnsNum.slice(0,demiNbCols))
-                       .range([0, width])
-        let yScale = d3.scaleBand()
-                       .domain(data.columnsNum.slice(-demiNbCols))
-                       .range([0, height])
-        let tScale = d3.scaleLinear()
-                     .domain([1, 4])
-                     .range([14, 8])
-        let rScale = d3.scaleLinear()
-                     .domain([5, 10])
-                     .range([4, 1])
-        data.columnsNum.slice(0,demiNbCols).forEach( function (d1, i) {
-          data.columnsNum.slice(-demiNbCols).forEach( function (d2, j) {
-            scatterplot(data, d1, d2, 'sepal_length', 'species', margin.left + i * xScale.bandwidth(), margin.top + j * yScale.bandwidth(), xScale.bandwidth(), yScale.bandwidth(), padding.v, padding.h, tScale(demiNbCols), rScale(demiNbCols))
-          })
-        })
-      }
-    })
-
-    var scatterplot = function(data, x, y, r, c, _xStart, _yStart, _width, _height, _vPad, _hPad, _tSize, _maxR) {
-      let xScale = d3.scaleLinear()
-                     .domain(d3.extent(data, function (d) { return d[x] }))
-                     .range([0, _width - 2 * _vPad])
-      let yScale = d3.scaleLinear()
-                     .domain(d3.extent(data, function (d) { return d[y] }))
-                     .range([_height - 2 * _hPad, 0])
-      let rScale = d3.scaleSqrt()
-                     .domain(d3.extent(data, function (d) { return d[r] }))
-                     .range([1, _maxR])
-      let cScale = d3.scaleOrdinal(d3.schemeCategory20)
-                     .domain(d3.extent(data, function (d) { return d[c] }))
-      
-      var xAxis = d3.axisBottom()
-                    .scale(xScale);
-
-      var yAxis = d3.axisLeft()
-                    .scale(yScale);
-      
-      let g = svg.append('g')
-       
-      g.append("text")
-       .text(`${x} vs ${y} | size : ${r}`)
-       .attr('x', _xStart + _vPad)
-       .attr('y', _yStart + _hPad)
-       .attr("font-size", `${_tSize}px`)
-       .attr("font-family", "monospace")
-      
-      g.selectAll('circle')
-       .data(data)
-       .enter()
-       .append('circle')
-       .style('fill', function(d) { return cScale(d[c]) })
-       .style('stroke', 'gray')
-       .attr('cx', function(d) { return _xStart + _vPad + xScale(d[x])})
-       .attr('cy', function(d) { return _yStart + _hPad + yScale(d[y])})
-       .style('opacity', '0.3')
-       .on('mouseover', function(e) {
-        d3.selectAll('circle')
-          .style('opacity', function(d) {
-            if (d===e){
-              return '1'
-            } else {
-              return '0.3'
-            }
-        })
-       })
-       .on('mouseout', function(e) {
-        d3.selectAll('circle')
-          .style('opacity', '0.3')
-       })
-       .transition()
-       .duration(500)
-       .attr('r', function(d) { return rScale(d[r]) })
-
-      
-      g.append("g")
-       .attr("class", "x axis")
-       .attr("transform", `translate(${_xStart + _vPad},${_yStart +  _height - _hPad})`)
-       .style("font-size", `${_tSize}px`)
-       .style("font-family", "monospace")
-       .call(xAxis)
-      
-      g.append("g")
-       .attr("class", "y axis")
-       .attr("transform", `translate(${_xStart + _vPad},${_yStart + _hPad})`)
-       .style("font-size", `${_tSize}px`)
-       .style("font-family", "monospace")
-       .call(yAxis)
-    }
+	console.log(data);
+	// TODO
+      });
   </script>
 </body>
 
