@@ -16,24 +16,18 @@ aaaaaaaaaaa
     var svg = d3.select("body").append("svg")
       .attr("width", 960)
       .attr("height", 500)
-
     var margin = {top: 60, right: 60, bottom: 60, left: 60};
-
     var width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
-            
     var padding = {h: 15, v: 15}
-    
     // TAILLE DE LA MATRICE. CHOISIR ENTRE 1 ET 4
     var demiNbCols = 2
-    
     d3.csv('iris.csv', function(error, data) {
       if (error) {
         console.log(error)
       }
       else {
         data.columnsNum = data.columns.filter(d => { return +data[0][d] == data[0][d]})
-        
         let xScale = d3.scaleBand()
                        .domain(data.columnsNum.slice(0,demiNbCols))
                        .range([0, width])
@@ -53,7 +47,6 @@ aaaaaaaaaaa
         })
       }
     })
-
     var scatterplot = function(data, x, y, r, c, _xStart, _yStart, _width, _height, _vPad, _hPad, _tSize, _maxR) {
       let xScale = d3.scaleLinear()
                      .domain(d3.extent(data, function (d) { return d[x] }))
@@ -66,22 +59,17 @@ aaaaaaaaaaa
                      .range([1, _maxR])
       let cScale = d3.scaleOrdinal(d3.schemeCategory20)
                      .domain(d3.extent(data, function (d) { return d[c] }))
-      
       var xAxis = d3.axisBottom()
                     .scale(xScale);
-
       var yAxis = d3.axisLeft()
                     .scale(yScale);
-      
-      let g = svg.append('g')
-       
+      let g = svg.append('g');
       g.append("text")
        .text(`${x} vs ${y} | size : ${r}`)
        .attr('x', _xStart + _vPad)
        .attr('y', _yStart + _hPad)
        .attr("font-size", `${_tSize}px`)
-       .attr("font-family", "monospace")
-      
+       .attr("font-family", "monospace");
       g.selectAll('circle')
        .data(data)
        .enter()
@@ -108,15 +96,12 @@ aaaaaaaaaaa
        .transition()
        .duration(500)
        .attr('r', function(d) { return rScale(d[r]) })
-
-      
       g.append("g")
        .attr("class", "x axis")
        .attr("transform", `translate(${_xStart + _vPad},${_yStart +  _height - _hPad})`)
        .style("font-size", `${_tSize}px`)
        .style("font-family", "monospace")
        .call(xAxis)
-      
       g.append("g")
        .attr("class", "y axis")
        .attr("transform", `translate(${_xStart + _vPad},${_yStart + _hPad})`)
