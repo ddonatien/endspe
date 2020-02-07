@@ -4,6 +4,13 @@ You can use the [editor on GitHub](https://github.com/ddonatien/endspe/edit/mast
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
+Aaaaaaaaaaaaaa
+<script>
+  alert('Alert!')
+  console.log("Coucou")
+</script>
+aaaaaaaaaaa
+
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
@@ -20,10 +27,6 @@ Syntax highlighted code block
 
 1. Numbered
 2. List
-
-<script>
-  alert('Alert!')
-</script>
 
 **Bold** and _Italic_ and `Code` text
 
