@@ -40,7 +40,7 @@
         var cluster = d3.cluster()
             .size([360, width / 2 - 120]);
         
-        d3.csv("flare.csv", function(error, data) {
+        d3.csv("https://gist.githubusercontent.com/mbostock/4739610f6d96aaad2fb1e78a72b385ab/raw/8458d52e8e51c72510fcdd1bfad4088bea8d2079/flare.csv", function(error, data) {
           if (error) throw error;
         
           var root = stratify(data)
