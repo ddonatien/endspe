@@ -27,7 +27,7 @@ aaaaaaaaaaa
         console.log(error)
       }
       else {
-        data.columnsNum = data.columns.filter(d => { return +data[0][d] == data[0][d]})
+        data.columnsNum = data.columns.filter(function(d){ return +data[0][d] == data[0][d]})
         let xScale = d3.scaleBand()
                        .domain(data.columnsNum.slice(0,demiNbCols))
                        .range([0, width])
