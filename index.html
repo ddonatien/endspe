@@ -67,8 +67,10 @@
         d3.csv("https://gist.githubusercontent.com/mbostock/4739610f6d96aaad2fb1e78a72b385ab/raw/8458d52e8e51c72510fcdd1bfad4088bea8d2079/flare.csv", function(error, data) {
           if (error) console.log(error);
         
+	  console.log(data);
           var root = stratify(data)
               .sort(function(a, b) { return a.height - b.height || a.id.localeCompare(b.id); });
+	  console.log(root);
         
           cluster(root);
 	  console.log(root);
