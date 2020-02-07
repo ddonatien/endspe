@@ -22,7 +22,7 @@ aaaaaaaaaaa
     var padding = {h: 15, v: 15}
     // TAILLE DE LA MATRICE. CHOISIR ENTRE 1 ET 4
     var demiNbCols = 2
-    d3.csv('https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv', function(error, data) {
+    d3.csv('https://raw.githubusercontent.com/ddonatien/endspe/master/iris.csv', function(error, data) {
       if (error) {
         console.log("Error")
         console.log(error)
