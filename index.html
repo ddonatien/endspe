@@ -47,15 +47,6 @@
     //          
     //  var padding = {h: 15, v: 15}
     
-    d3.csv('https://raw.githubusercontent.com/ddonatien/endspe/master/data/EU_Red_List_Simplified.csv', function(error, data) {
-      if (error) {
-        console.log(error)
-      }
-      else {
-	console.log(data)
-      }
-    });
-
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
@@ -67,7 +58,7 @@
     var cluster = d3.cluster()
         .size([360, width / 2 - 200]);
     
-    d3.csv("https://gist.githubusercontent.com/mbostock/4739610f6d96aaad2fb1e78a72b385ab/raw/8458d52e8e51c72510fcdd1bfad4088bea8d2079/flare.csv", function(error, data) {
+    d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/phylo.csv", function(error, data) {
       if (error) console.log(error);
     
       // console.log(data);
