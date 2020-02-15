@@ -58,10 +58,13 @@
     
     var cluster = d3.cluster()
         .size([360, width / 2 - 200]);
-
-    let color = d3.scaleOrdinal(d3.schemeRdBu[9])
-                  .domain([-3, 3]);
     
+    let color = d3.scaleSequential(t => {
+                        if (t < 0.75) { return d3.interpolateInferno(t) }
+                        else { return d3.interpolateViridis(1 - t + 0.75) }
+              })
+              .domain([-3, 3]);
+
     d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/phylo_animal.csv", function(error, data) {
       if (error) console.log(error);
     
