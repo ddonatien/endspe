@@ -3,7 +3,7 @@ function phyloTree(url) {
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
-        g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + (height / 2 - 30) + ")");
+        g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + (height / 2 - 130) + ")");
 
     var stratify = d3.stratify()
         .parentId(function(d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
