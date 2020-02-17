@@ -49,13 +49,13 @@ function phyloTree(url) {
           .attr("r", 2.5)
           .style("fill", function(d) { return color(d.data.value); } );
 
-      node.append("text")
-          .attr("dy", "0.31em")
-          .attr("x", function(d) { return d.x < 180 === !d.children ? 6 : -6; })
-          .style("text-anchor", function(d) { return d.x < 180 === !d.children ? "start" : "end"; })
-          .attr("transform", function(d) { return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")"; })
-          .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); })
-          .style("opacity", 0);
+      //node.append("text")
+          //.attr("dy", "0.31em")
+          //.attr("x", function(d) { return d.x < 180 === !d.children ? 6 : -6; })
+          //.style("text-anchor", function(d) { return d.x < 180 === !d.children ? "start" : "end"; })
+          //.attr("transform", function(d) { return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")"; })
+          //.text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); })
+          //.style("opacity", 1);
     });
 
     function project(x, y) {
