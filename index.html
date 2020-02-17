@@ -6,10 +6,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
   <!--<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>-->
 
+  <script src="js/lib/jquery-3.4.1.min.js"></script>
+
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
   <script src="js/phylo_tree.js"></script>
+  <script src="js/index.js"></script>
   <script src="css/index.css"></script>
 
   <title>ENDSPE</title>
@@ -35,18 +38,12 @@
             </a>
 
             <div class="navbar-dropdown is-right">
-                <a class="navbar-item">
-                  <span class="icon is-small">
-                    <i class="fa fa-user-o"></i>
-                  </span>
-                  &nbsp; Animals
+                <a class="navbar-item display_animal">
+                  Animals
                 </a>
                 <hr class="navbar-divider">
-                <a class="navbar-item">
-                  <span class="icon is-small">
-                    <i class="fa fa-power-off"></i>
-                  </span>
-                  &nbsp; Plants
+                <a class="navbar-item display_plant">
+                  Plants
                 </a>
             </div>
           </div>
@@ -63,8 +60,8 @@
             Reign
           </p>
           <ul class="menu-list">
-            <li><a href="#"><span class="icon is-small"></span>Animals</a></li>
-            <li><a href="#"><span class="icon is-small"></span>Plants</a></li>
+            <li><a class="display_animal">Animals</a></li>
+            <li><a class="display_plant">Plants</a></li>
           </ul>
           <p class="menu-label">
             Parameters
@@ -82,7 +79,8 @@
           <div class="container">
             <svg width="960" height="900"></svg>
             <script>
-              phyloTree("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv");
+              var currentReignUrl = localStorage.getItem("current-reign-url") || "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv";
+              phyloTree(currentReignUrl);
             </script>
           </div>
         </section>
