@@ -11,9 +11,10 @@ function phyloTree(url) {
     var cluster = d3.cluster()
         .size([360, width / 2 - 200]);
 
-    var fisheye = d3.fisheye.circular()
-                    .radius(90)
-                    .distortion(7);
+    var fisheye = d3.fisheye.closedRadial()
+	            .frontier(width / 2 - 200)
+                    .radius(70)
+                    .distortion(5);
 
     let color = d3.scaleSequential(t => {
                         if (t < 0.75) { return d3.interpolateInferno(t) }
@@ -139,7 +140,7 @@ function phyloTree(url) {
                d.fisheye = fisheye(d);
              }
           })
-          .attr("transform", function(d) { return "translate(" + project(d.fisheye.x, d.fisheye.y) + ")"; });
+          .attr("transform", function(d) { return "translate(" + project(d.fisheye.x, d.y) + ")"; });
 
       opacity.domain([50, 0]);
       
@@ -152,15 +153,16 @@ function phyloTree(url) {
              } )
           .style("opacity", function(d) {
 	      dx = d.fisheye.x - mouse[0];
-	      dy = d.fisheye.y - mouse[1];
-	      return opacity(Math.sqrt(dx*dx + 0.7*dy*dy));
+	      dy = d.y - mouse[1];
+	      //return opacity(Math.exp(-2*dx*dx/(0.01 + dy)));
+	      return (1 - 0.01*dy*dy)*Math.exp(-2*dx*dx/(0.01 + d.y));
              } );
     
       link.attr("d", function(d) {
-            return "M" + project(d.fisheye.x, d.fisheye.y)
-                + "C" + project(d.fisheye.x, (d.fisheye.y + d.parent.fisheye.y) / 2)
-                + " " + project(d.parent.fisheye.x, (d.y + d.parent.fisheye.y) / 2)
-                + " " + project(d.parent.fisheye.x, d.parent.fisheye.y);
+            return "M" + project(d.fisheye.x, d.y)
+                + "C" + project(d.fisheye.x, (d.y + d.parent.y) / 2)
+                + " " + project(d.parent.fisheye.x, (d.y + d.parent.y) / 2)
+                + " " + project(d.parent.fisheye.x, d.parent.y);
           });
     });
 }
