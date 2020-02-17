@@ -36,7 +36,19 @@ function phyloTree(url) {
                 + " " + project(d.parent.x, d.parent.y);
           })
           .style("stroke", function(d) { return color(d.data.value); } )
-          .style("fill", "none" );
+          .style("fill", "none" )
+          .on("mouseover", function(d) {
+            d3.selectAll(".link").filter(function(e) {
+              return e === d;
+            })
+            .style("stroke-width", 4)
+          })
+          .on("mouseout", function(d) {
+            d3.selectAll(".link").filter(function(e) {
+              return e === d;
+            })
+            .style("stroke-width", 1)
+          });
 
       var node = g.selectAll(".node")
           .data(root.descendants())
@@ -62,4 +74,14 @@ function phyloTree(url) {
       var angle = (x - 90) / 180 * Math.PI, radius = y;
       return [radius * Math.cos(angle), radius * Math.sin(angle)];
     }
+
+
+    //function mouseovered(active) {
+      //return function(d) {
+        //d3.select(this).classed("label--active", active);
+        //d3.select(d.linkExtensionNode).classed("link-extension--active", active).raise();
+        //do d3.select(d.linkNode).classed("link--active", active).raise();
+        //while (d = d.parent);
+      //};
+    //}
 }
