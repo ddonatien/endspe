@@ -39,13 +39,17 @@ function phyloTree(url) {
           .style("fill", "none" )
           .on("mouseover", function(d) {
             d3.selectAll(".link").filter(function(e) {
-              return e === d;
+              return e === d || e === d.parent || e === d.parent.parent ||
+                e === d.parent.parent.parent || e === d.parent.parent.parent.parent ||
+                e === d.parent.parent.parent.parent.parent;
             })
             .style("stroke-width", 4)
           })
           .on("mouseout", function(d) {
             d3.selectAll(".link").filter(function(e) {
-              return e === d;
+              return e === d || e === d.parent || e === d.parent.parent ||
+              e === d.parent.parent.parent || e === d.parent.parent.parent.parent ||
+              e === d.parent.parent.parent.parent.parent;
             })
             .style("stroke-width", 1)
           });
