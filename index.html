@@ -16,20 +16,78 @@
 </head>
 
 <body>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Hello World
-      </h1>
-      <p class="subtitle">
-        My first website with <strong>Bulma</strong>!
-      </p>
+
+  <header class="hero">
+    <div class="hero-head">
+      <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+
+          <a class="navbar-item is-tab is-hidden-mobile"><span class="icon is-medium"><i class="fa fa-home"></i></span>ENDSPE Visualization</a>
+          <a class="navbar-item is-tab is-hidden-mobile" href="#about">About</a>
+
+        </div>
+
+
+        <div class="navbar-menu navbar-end" id="navMenu">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Display
+            </a>
+
+            <div class="navbar-dropdown is-right">
+                <a class="navbar-item">
+                  <span class="icon is-small">
+                    <i class="fa fa-user-o"></i>
+                  </span>
+                  &nbsp; Animals
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                  <span class="icon is-small">
+                    <i class="fa fa-power-off"></i>
+                  </span>
+                  &nbsp; Plants
+                </a>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
-    <div class="container">
-      <svg width="960" height="900"></svg>
-      <script>
-        phyloTree("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv");
-      </script>
+  </header>
+
+  <div class="wrapper">
+    <div class="columns">
+      <aside class="column is-2 aside">
+        <nav class="menu">
+          <p class="menu-label">
+            Reign
+          </p>
+          <ul class="menu-list">
+            <li><a href="#"><span class="icon is-small"></span>Animals</a></li>
+            <li><a href="#"><span class="icon is-small"></span>Plants</a></li>
+          </ul>
+          <p class="menu-label">
+            Parameters
+          </p>
+          <ul class="menu-list">
+            <li><a href="#"><span class="icon is-small"></i></span>Choose species</a></li>
+            <li><a href="#"><span class="icon is-small"></span>Want more ?</a></li>
+            <li><a href="#"><span class="icon is-small"></span>More functionnalities</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="column main">
+        <section class="section">
+          <div class="container">
+            <svg width="960" height="900"></svg>
+            <script>
+              phyloTree("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv");
+            </script>
+          </div>
+        </section>
+      </main>
     </div>
-  </section>
+  </div>
+
 </body>
