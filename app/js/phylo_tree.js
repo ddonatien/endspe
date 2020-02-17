@@ -43,23 +43,27 @@ function phyloTree(url) {
               .style("fill", "none" )
               .on("mouseover", function(d) {
                 d3.selectAll(".link").filter(function(e) {
-		              let parents = [];
+                  if (e===d) return true
+		       	      let node = { ...d };
 		              while (node) {
-		                parents.push(node);
+				            if (node === e) {
+					            return true;
+				            }
 		                node = node.parent;
 		              }
-                  return containsObject(e, parents);
                 })
                 .style("stroke-width", 4)
               })
               .on("mouseout", function(d) {
                 d3.selectAll(".link").filter(function(e) {
-		              let parents = [];
+                  if (e===d) return true
+		       	      let node = { ...d };
 		              while (node) {
-		                parents.push(node);
+				            if (node == e) {
+					            return true;
+				            }
 		                node = node.parent;
 		              }
-                  return containsObject(e, parents);
                 })
                 .style("stroke-width", 1)
               });
@@ -101,7 +105,7 @@ function phyloTree(url) {
     function containsObject(obj, list) {
       var i;
       for (i = 0; i < list.length; i++) {
-          if (list[i] === obj) {
+          if (list[i].id === obj.id) {
               return true;
           }
       }
