@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <!--<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>-->
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"></script>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+  <script src="js/fisheye.js"></script>
+  <script src="js/phylo_tree.js"></script>
+  <script src="js/index.js"></script>
+
+  <link rel="stylesheet"  src="css/index.css"></link>
+
+  <title>ENDSPE</title>
+</head>
+
+<body>
+
+  <header class="hero">
+    <div class="hero-head">
+      <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+
+          <a class="navbar-item is-tab is-hidden-mobile"><span class="icon is-medium"><i class="fa fa-home"></i></span>ENDSPE Visualization</a>
+          <a class="navbar-item is-tab is-hidden-mobile" href="#about">About</a>
+
+        </div>
+
+
+        <div class="navbar-menu navbar-end" id="navMenu">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Display
+            </a>
+
+            <div class="navbar-dropdown is-right">
+                <a class="navbar-item display_animal">
+                  Animals
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item display_plant">
+                  Plants
+                </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrapper">
+    <div class="columns">
+      <aside class="column is-2 aside">
+        <nav class="menu">
+          <p class="menu-label">
+            Reign
+          </p>
+          <ul class="menu-list">
+            <li><a class="display_animal">Animals</a></li>
+            <li><a class="display_plant">Plants</a></li>
+          </ul>
+          <p class="menu-label">
+            Parameters
+          </p>
+          <ul class="menu-list">
+            <li><a href="#"><span class="icon is-small"></i></span>Choose species</a></li>
+            <li><a href="#"><span class="icon is-small"></span>Want more ?</a></li>
+            <li><a href="#"><span class="icon is-small"></span>More functionnalities</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="column main">
+        <section class="section">
+          <div class="container">
+            <svg width="960" height="900"></svg>
+            <script>
+              var currentReignUrl = localStorage.getItem("current-reign-url") || "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv";
+              phyloTree(currentReignUrl);
+            </script>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+</body>
