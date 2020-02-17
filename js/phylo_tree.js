@@ -73,7 +73,33 @@ function phyloTree(url) {
               .data(root.descendants())
               .enter().append("g")
               .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
-              .attr("transform", function(d) { return "translate(" + project(d.x, d.y) + ")"; });
+              .attr("transform", function(d) { return "translate(" + project(d.x, d.y) + ")"; })
+              .on("mouseover", function(d) {
+                d3.selectAll(".link").filter(function(e) {
+                  if (e===d) return true
+		       	      let node = { ...d };
+		              while (node) {
+				            if (node === e) {
+					            return true;
+				            }
+		                node = node.parent;
+		              }
+                })
+                .style("stroke-width", 4)
+              })
+              .on("mouseout", function(d) {
+                d3.selectAll(".link").filter(function(e) {
+                  if (e===d) return true
+		       	      let node = { ...d };
+		              while (node) {
+				            if (node == e) {
+					            return true;
+				            }
+		                node = node.parent;
+		              }
+                })
+                .style("stroke-width", 1)
+              });
 
           node.append("circle")
               .attr("r", 2.5)
