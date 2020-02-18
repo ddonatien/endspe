@@ -23,7 +23,7 @@
 
 #wiki {
   overflow-y: auto;
-  max-height: 200px;
+  max-height: 80vh;
 }
 
 #left-bar-title {
