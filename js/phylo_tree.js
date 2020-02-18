@@ -13,7 +13,7 @@ function phyloTree(url) {
         .size([360, width / 2 - 200]);
 
     var fisheye = d3.fisheye.closedRadial()
-	            .frontier(width / 2 - 200)
+               .frontier(width / 2 - 200)
                     .radius(70)
                     .distortion(15);
 
@@ -22,6 +22,38 @@ function phyloTree(url) {
                         else { return d3.interpolateViridis(1 - t + 0.75) }
               })
               .domain([-3, 3]);
+
+    var scaleDatas = [
+      { "x_axis": 10, "y_axis": 10, "height": 17, "width": 17, "color" : color(3), "text": "Safe" },
+      { "x_axis": 10, "y_axis": 40, "height": 17, "width": 17, "color" : color(2), "text": "Minor threat" },
+      { "x_axis": 10, "y_axis": 70, "height": 17, "width": 17, "color" : color(1.5), "text": "Vulnerable" },
+      { "x_axis": 10, "y_axis": 100, "height": 17, "width": 17, "color" : color(1), "text": "Endangered" },
+      { "x_axis": 10, "y_axis": 130, "height": 17, "width": 17, "color" : color(-0.1), "text": "Critical danger" },
+      { "x_axis": 10, "y_axis": 160, "height": 17, "width": 17, "color" : color(-1), "text": "Extinct in the wild" },
+      { "x_axis": 10, "y_axis": 190, "height": 17, "width": 17, "color" : color(-3), "text": "Extinct" }
+    ];
+
+    function draw_scale_legend(data) {
+      let g = svg.append("g");
+
+      data.forEach( function(d) {
+        var rectangle = g.append("rect")
+            .attr("x", d.x_axis)
+            .attr("y", d.y_axis)
+            .attr("height", d.height)
+            .attr("width", d.width)
+            .style("fill", d.color)
+            .style("opacity", 0.9);
+        var legend = g.append("text")
+            .text(d.text)
+            .attr("x", d.x_axis + 27)
+            .attr("y", d.y_axis + 14)
+            .attr("font-size", "15px")
+            .attr("fill", "#3f4040");
+      })
+    }
+
+    draw_scale_legend(scaleDatas);
 
     d3.csv(url, function(error, data) {
       if (error) console.log(error);
