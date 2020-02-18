@@ -57,45 +57,42 @@
   </header>
 
   <div class="wrapper">
-    <div class="columns">
+    <div class="columns" style="margin-top: 0px;">
       <aside class="column is-2 aside">
         <nav class="menu">
-          <p class="menu-label">
+          <p class="menu-label" id="left-bar-title">
             Reign
           </p>
           <ul class="menu-list">
             <li><a class="display_animal">Animals</a></li>
             <li><a class="display_plant">Plants</a></li>
           </ul>
-          <p class="menu-label">
+          <p class="menu-label" id="left-bar-title">
             Parameters
           </p>
           <ul class="menu-list">
-            <li><a href="#"><span class="icon is-small"></i></span>Choose species</a></li>
-            <li><a href="#"><span class="icon is-small"></span>Want more ?</a></li>
-            <li><a href="#"><span class="icon is-small"></span>More functionnalities</a></li>
+            <li><a class="#">Choose species</a></li>
+            <li><a class="#">Want more ?</a></li>
+            <li><a class="#">More functionnalities</a></li>
           </ul>
         </nav>
       </aside>
-
-      <main class="column main">
-        <section class="section">
-          <div class="container">
-            <svg width="960" height="900"></svg>
-            <script>
-              var currentReignUrl = localStorage.getItem("current-reign-url") || "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal_2.csv";
-              phyloTree(currentReignUrl);
-            </script>
-          </div>
-        </section>
-      </main>
-      <section class="column second">
+      <div class="column">
+        <div class="container">
+          <svg width="960" height="900"></svg>
+          <script>
+            var currentReignUrl = localStorage.getItem("current-reign-url") || "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal_2.csv";
+            phyloTree(currentReignUrl);
+          </script>
+        </div>
+      </div>
+      <div class="column">
         <p class="menu-label">
           Wikipedia
         </p>
         <div id="wiki" class="container">
         </div>
-      </section>
+      </div>
     </div>
   </div>
 
