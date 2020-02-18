@@ -20,3 +20,8 @@
   stroke-opacity: 0.4;
   stroke-width: 1.5px;
 }
+
+#wiki {
+  overflow-y: auto;
+  max-height: 200px;
+}

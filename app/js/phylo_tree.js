@@ -1,5 +1,6 @@
 // Display a phylo tree with datas from url
 function phyloTree(url) {
+    const Http = new XMLHttpRequest();
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
@@ -99,6 +100,22 @@ function phyloTree(url) {
 		              }
                 })
                 .style("stroke-width", 1)
+              })
+              .on('click', function(d) {
+                console.log('click');
+                let split = d.id.split('.')
+                let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${split[split.length - 1]}&format=json`;
+                Http.open("GET", url, true);
+                Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                Http.responseType = 'json';
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                  console.log(Http.response);
+                  let pages = Http.response.query.pages;
+                  let key = Object.keys(pages)[0];
+                  d3.select("#wiki").html(pages[key].extract);
+                }
               });
 
           node.append("circle")
@@ -111,7 +128,7 @@ function phyloTree(url) {
               .style("text-anchor", function(d) { return d.x < 180 === !d.children ? "start" : "end"; })
               .attr("transform", function(d) { return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")"; })
               .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); })
-              .style("visibility", "hidden");
+              .style("visibility", "hidden")
       }
     });
 
