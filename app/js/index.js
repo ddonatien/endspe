@@ -2,7 +2,7 @@ jQuery($ => {
 
 	$('.display_animal').click(() => 
 		{
-			localStorage.setItem("current-reign-url", "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal.csv");
+			localStorage.setItem("current-reign-url", "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_animal_1.csv");
 			location.reload();
 		}
 	);
