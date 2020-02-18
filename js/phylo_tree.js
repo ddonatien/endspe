@@ -165,6 +165,12 @@ function phyloTree(url) {
               .attr("transform", function(d) { return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")"; })
               .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); })
               .style("visibility", "hidden")
+	  
+        // Utilisé pour la calibration (on peut sûrement faire mieux)
+        // g.append("circle")
+        //  .attr("r", 2.5)
+        //  .attr("fill", "black")
+        //  .attr("transform", "translate(" + project(0, 0) + ")");
       }
     });
 
@@ -174,9 +180,10 @@ function phyloTree(url) {
     }
 
     function retroProject(x, y, svg){
-      rect = svg.getBoundingClientRect()
+      // rect = svg.getBoundingClientRect()
+      // console.log(x, y)
       x = x - width / 2;
-      y = y - width / 2 + 160.;
+      y = y - width / 2 + 110;
       a = 180 * +(x<0) + 90 + 180 / Math.PI * Math.atan(y/x)
       r = Math.sqrt(x*x + y*y)
       return [180 * +(x<0) + 90 + 180 / Math.PI * Math.atan(y/x), Math.sqrt(x*x + y*y)]
