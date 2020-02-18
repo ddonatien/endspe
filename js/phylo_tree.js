@@ -54,7 +54,8 @@ function phyloTree(url) {
 		                node = node.parent;
 		              }
                 })
-                .style("stroke-width", 4)
+                .style("stroke-width", 2)
+                .style("stroke", 'black')
               })
               .on("mouseout", function(d) {
                 d3.selectAll(".link").filter(function(e) {
@@ -68,6 +69,7 @@ function phyloTree(url) {
 		              }
                 })
                 .style("stroke-width", 1)
+                .style("stroke", function(d) { return color(d.data.value); } )
               });
 
           var node = g.selectAll(".node")
@@ -86,7 +88,8 @@ function phyloTree(url) {
 		                node = node.parent;
 		              }
                 })
-                .style("stroke-width", 4)
+                .style("stroke-width", 2)
+                .style("stroke", 'black')
               })
               .on("mouseout", function(d) {
                 d3.selectAll(".link").filter(function(e) {
@@ -100,6 +103,7 @@ function phyloTree(url) {
 		              }
                 })
                 .style("stroke-width", 1)
+                .style("stroke", function(d) { return color(d.data.value); } )
               })
               .on('click', function(d) {
                 console.log('click');
