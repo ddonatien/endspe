@@ -15,7 +15,7 @@ function phyloTree(url) {
     var fisheye = d3.fisheye.closedRadial()
 	            .frontier(width / 2 - 200)
                     .radius(70)
-                    .distortion(5);
+                    .distortion(15);
 
     let color = d3.scaleSequential(t => {
                         if (t < 0.75) { return d3.interpolateInferno(t) }
@@ -123,7 +123,7 @@ function phyloTree(url) {
               });
 
           node.append("circle")
-              .attr("r", 2.5)
+              .attr("r", 0.45)
               .style("fill", function(d) { return color(d.data.value); } );
 
           node.append("text")
@@ -168,6 +168,7 @@ function phyloTree(url) {
       let node = g.selectAll(".node")
       let link = g.selectAll(".link")
       let text = g.selectAll("text")
+      let circle = g.selectAll("circle")
       let opacity = d3.scalePow()
 	                    .exponent(0.7)
 	                    .range([0, 1]);
@@ -204,6 +205,8 @@ function phyloTree(url) {
 	      //return opacity(Math.exp(-2*dx*dx/(0.01 + dy)));
 	      return (1 - 0.01*dy*dy)*Math.exp(-2*dx*dx/(0.01 + d.y));
              } );
+
+      circle.attr("r", function(d) { return 0.45 * d.fisheye.z; });
     
       link.attr("d", function(d) {
             return "M" + project(d.fisheye.x, d.y)
