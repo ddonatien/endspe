@@ -15,7 +15,7 @@ function phyloTree(url) {
     var fisheye = d3.fisheye.closedRadial()
 	            .frontier(width / 2 - 200)
                     .radius(70)
-                    .distortion(5);
+                    .distortion(15);
 
     let color = d3.scaleSequential(t => {
                         if (t < 0.75) { return d3.interpolateInferno(t) }
