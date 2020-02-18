@@ -25,3 +25,7 @@
   overflow-y: auto;
   max-height: 200px;
 }
+
+#left-bar-title {
+  margin-left: 12px
+}
