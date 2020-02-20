@@ -8,7 +8,7 @@ jQuery($ => {
 	);
 	$('.display_plant').click(() => 
 		{
-			localStorage.setItem("current-reign-url", "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant.csv");
+			localStorage.setItem("current-reign-url", "https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_spec.csv");
 			location.reload();
 		}
 	);

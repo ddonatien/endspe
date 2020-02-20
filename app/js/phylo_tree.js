@@ -138,7 +138,8 @@ function phyloTree(url) {
                 .style("stroke", function(d) { return color(d.data.value); } )
               })
               .on('click', function(d) {
-                console.log('click');
+
+                // Load wiki data
                 let split = d.id.split('.')
                 let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${split[split.length - 1]}&format=json`;
                 Http.open("GET", url, true);
@@ -147,11 +148,24 @@ function phyloTree(url) {
                 Http.send();
 
                 Http.onreadystatechange = (e) => {
-                  console.log(Http.response);
+                  //console.log(Http.response);
                   let pages = Http.response.query.pages;
                   let key = Object.keys(pages)[0];
                   d3.select("#wiki").html(pages[key].extract);
+                  
+                  // Load rationale data
+                  d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
+                    if (error) console.log(error)
+
+                    let nested = d3.nest()
+                                   .key(function(b) { return b.id; })
+                                   .map(data);
+                    console.log(d.id)
+                    console.log(nested["$" + d.id][0].value);
+                    d3.select("#ratio").html(nested["$" + d.id][0].value);
+                  });
                 }
+
               });
 
           node.append("circle")
