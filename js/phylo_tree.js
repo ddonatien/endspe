@@ -148,10 +148,8 @@ function phyloTree(url) {
                 Http.send();
 
                 Http.onreadystatechange = (e) => {
-                  console.log(Http.response);
                   let pageTitle = Http.response[1][0];
                   let wikiUrl = Http.response[3][0];
-                  console.log(pageTitle);
                   let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
                   Http.open("GET", url, true);
                   Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
@@ -159,7 +157,6 @@ function phyloTree(url) {
                   Http.send();
 
                   Http.onreadystatechange = (e) => {
-                    console.log(Http.response);
                     let pages = Http.response.query.pages;
                     let key = Object.keys(pages)[0];
                     if (key) {
@@ -170,6 +167,29 @@ function phyloTree(url) {
                       }
                       d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
                     
+                      let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=images&titles=${pageTitle}&format=json`;
+                      Http.open("GET", url, true);
+                      Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                      Http.responseType = 'json';
+                      Http.send();
+
+                      Http.onreadystatechange = (e) => {
+                        let images = Http.response.query.pages[key].images[0].title.replace('File:', '');
+                        let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
+                        Http.open("GET", url, true);
+                        Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                        Http.responseType = 'json';
+                        Http.send();
+
+                        Http.onreadystatechange = (e) => {
+                          let ipages = Http.response.query.pages;
+                          let ikey = Object.keys(ipages)[0];
+                          let imurl = ipages[ikey].imageinfo[0].url;
+                          if (imurl) {
+                            d3.select("#illustration").attr("src", imurl);
+                          }
+                        }
+                      }
                       // Load rationale data
                       // d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
                       //   if (error) console.log(error)
