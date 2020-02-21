@@ -15,7 +15,7 @@ function phyloTree(url) {
     var fisheye = d3.fisheye.closedRadial()
                .frontier(width / 2 - 200)
                     .radius(70)
-                    .distortion(15);
+                    .distortion(19);
 
     let color = d3.scaleSequential(t => {
                         if (t < 0.75) { return d3.interpolateInferno(t) }
@@ -162,24 +162,28 @@ function phyloTree(url) {
                     console.log(Http.response);
                     let pages = Http.response.query.pages;
                     let key = Object.keys(pages)[0];
-                    if (pages[key].extract) {
-                      d3.select("#wiki").html(pages[key].extract);
-                    } else {
-                      d3.select("#wiki").html("No wiki extract :( <br>");
-                    }
-                    d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
-                  
-                    // Load rationale data
-                    d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
-                      if (error) console.log(error)
+                    if (key) {
+                      if (pages[key].extract) {
+                        d3.select("#wiki").html(pages[key].extract);
+                      } else {
+                        d3.select("#wiki").html("No wikipedia extract :( <br>");
+                      }
+                      d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
+                    
+                      // Load rationale data
+                      // d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
+                      //   if (error) console.log(error)
 
-                      let nested = d3.nest()
-                                     .key(function(b) { return b.id; })
-                                     .map(data);
-                      console.log(d.id)
-                      console.log(nested["$" + d.id][0].value);
-                      d3.select("#ratio").html(nested["$" + d.id][0].value);
-                    });
+                      //   let nested = d3.nest()
+                      //                  .key(function(b) { return b.id; })
+                      //                  .map(data);
+                      //   console.log(d.id)
+                      //   console.log(nested["$" + d.id][0].value);
+                      //   d3.select("#ratio").html(nested["$" + d.id][0].value);
+                      // });
+                    } else {
+                      d3.select("#wiki").html("No wikipedia page found :(");
+                    }
                   }
                 }
 
