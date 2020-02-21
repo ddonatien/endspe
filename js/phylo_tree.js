@@ -138,6 +138,8 @@ function phyloTree(url) {
                 .style("stroke", function(d) { return color(d.data.value); } )
               })
               .on('click', function(d) {
+                d3.select("#thlevel").style("visibility", "visible");
+                d3.select("#thlevel").select('svg').append('rect').attr('fill', color(d.data.value)).attr("width", "5vh").attr("height", "1vh");
 
                 // Load wiki data
                 let split = d.id.split('.')
@@ -187,7 +189,7 @@ function phyloTree(url) {
                           let imurl = ipages[ikey].imageinfo[0].url;
                           if (imurl) {
                             d3.select("#illustration").attr("src", imurl);
-                          }
+                        }
                         }
                       }
                       // Load rationale data
