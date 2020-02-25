@@ -59,7 +59,10 @@
             dy = d.y - focus[1],
             dd = Math.sqrt(dx * dx + dy * dy);
         if (!dd || dd >= radius) return {x: d.x, y: d.y, z: dd >= radius ? 1 : 10};
-        var k = k0 * (1 - Math.exp(-dd * k1 * (1 -  (d.y / frontier - 1)*(d.y / frontier - 1)*(d.y / frontier - 1)*(d.y / frontier - 1)))) / dd * .75 + .25;
+        // var k = k0 * (1 - Math.exp(-dd * k1 * (1 -  (d.y / frontier - 1)*(d.y / frontier - 1)*(d.y / frontier - 1)*(d.y / frontier - 1)))) / dd * .75 + .25;
+        let ky = d.y / frontier;
+        var k =  k0 * (1 - Math.exp(-dd * k1)) / dd * .75 * ky + .25 + 0.75 * ( 1 - ky );
+        //var k = 1 
         return {x: focus[0] + dx * k, y: focus[1] + dy * k, z: Math.min(k, 10)};
       }
 
