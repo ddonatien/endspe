@@ -15,7 +15,7 @@ function phyloTree(url) {
     var fisheye = d3.fisheye.closedRadial()
                .frontier(width / 2 - 200)
                     .radius(70)
-                    .distortion(15);
+                    .distortion(19);
 
     let color = d3.scaleSequential(t => {
                         if (t < 0.75) { return d3.interpolateInferno(t) }
@@ -138,6 +138,8 @@ function phyloTree(url) {
                 .style("stroke", function(d) { return color(d.data.value); } )
               })
               .on('click', function(d) {
+                d3.select("#thlevel").style("visibility", "visible");
+                d3.select("#thlevel").select('svg').append('rect').attr('fill', color(d.data.value)).attr("width", "5vh").attr("height", "1vh");
 
                 // Load wiki data
                 let split = d.id.split('.')
@@ -148,10 +150,8 @@ function phyloTree(url) {
                 Http.send();
 
                 Http.onreadystatechange = (e) => {
-                  console.log(Http.response);
                   let pageTitle = Http.response[1][0];
                   let wikiUrl = Http.response[3][0];
-                  console.log(pageTitle);
                   let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
                   Http.open("GET", url, true);
                   Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
@@ -159,27 +159,53 @@ function phyloTree(url) {
                   Http.send();
 
                   Http.onreadystatechange = (e) => {
-                    console.log(Http.response);
                     let pages = Http.response.query.pages;
                     let key = Object.keys(pages)[0];
-                    if (pages[key].extract) {
-                      d3.select("#wiki").html(pages[key].extract);
-                    } else {
-                      d3.select("#wiki").html("No wiki extract :( <br>");
-                    }
-                    d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
-                  
-                    // Load rationale data
-                    d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
-                      if (error) console.log(error)
+                    if (key) {
+                      if (pages[key].extract) {
+                        d3.select("#wiki").html(pages[key].extract);
+                      } else {
+                        d3.select("#wiki").html("No wikipedia extract :( <br>");
+                      }
+                      d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
+                    
+                      let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=images&titles=${pageTitle}&format=json`;
+                      Http.open("GET", url, true);
+                      Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                      Http.responseType = 'json';
+                      Http.send();
 
-                      let nested = d3.nest()
-                                     .key(function(b) { return b.id; })
-                                     .map(data);
-                      console.log(d.id)
-                      console.log(nested["$" + d.id][0].value);
-                      d3.select("#ratio").html(nested["$" + d.id][0].value);
-                    });
+                      Http.onreadystatechange = (e) => {
+                        let images = Http.response.query.pages[key].images[0].title.replace('File:', '');
+                        let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
+                        Http.open("GET", url, true);
+                        Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                        Http.responseType = 'json';
+                        Http.send();
+
+                        Http.onreadystatechange = (e) => {
+                          let ipages = Http.response.query.pages;
+                          let ikey = Object.keys(ipages)[0];
+                          let imurl = ipages[ikey].imageinfo[0].url;
+                          if (imurl) {
+                            d3.select("#illustration").attr("src", imurl);
+                        }
+                        }
+                      }
+                      // Load rationale data
+                      // d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
+                      //   if (error) console.log(error)
+
+                      //   let nested = d3.nest()
+                      //                  .key(function(b) { return b.id; })
+                      //                  .map(data);
+                      //   console.log(d.id)
+                      //   console.log(nested["$" + d.id][0].value);
+                      //   d3.select("#ratio").html(nested["$" + d.id][0].value);
+                      // });
+                    } else {
+                      d3.select("#wiki").html("No wikipedia page found :(");
+                    }
                   }
                 }
 
