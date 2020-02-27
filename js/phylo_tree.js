@@ -302,7 +302,7 @@ function phyloTree(url) {
 	      return (1 - 0.01*dy*dy)*Math.exp(-2*dx*dx/(0.01 + d.y));
              } );
 
-      circle.attr("r", function(d) { return 0.45 * d.fisheye.z; });
+      circle.attr("r", function(d) { return 0.6 * d.fisheye.z; });
     
       link.attr("d", function(d) {
             return "M" + project(d.fisheye.x, d.y)
