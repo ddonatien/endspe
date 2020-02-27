@@ -1,10 +1,22 @@
 
 jQuery($ => {
 
-	// var phyloDatas = loadCSV("https://github.com/ddonatien/endspe/blob/master/app/data/phylo.csv");
-	// console.log(phyloDatas);
+	function loadCSV(url) {
+    d3.csv(url, function(error, data) {
+      if (error) console.log(error);
+      else {
+          var array = data.map((d) => d.id);
+          console.log(array);
+      }
+  	})
+	}
 
-	//var phyloItems = JSON.parse('{{itemList | tojson | safe}}');
+	// Avoid CORS matters
+	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	const url = 'https://github.com/ddonatien/endspe/blob/master/app/data/phylo.csv';
+	fetch(proxyurl + url)
+	.then(response => loadCSV(proxyurl+url))
+	.catch(() => console.log("Can’t access " + url + " response."))
 
 	var items = ["Animalia", "PLANTAE", "CHORDATA"];
 	//phyloItems.forEach(item => items.push(item))
@@ -29,6 +41,8 @@ jQuery($ => {
 	    return items1.concat(items2)
 	  },
 	  onSubmit: result => {
+	  	$("#wiki").empty();
+
     	const Http = new XMLHttpRequest();
 
 	  	let url=`https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&prop=extracts&exintro=&search=${result}&format=json`;
@@ -88,24 +102,6 @@ jQuery($ => {
 			}
 	    }}
 	})
-
-		
-	function loadCSV(url) {
-		var data;
-		
-		$.ajax({
-		  type: "GET",  
-		  url: url,
-		  dataType: "text",       
-		  success: function(response)  
-		  {
-			data = $.csv.toArrays(response);
-		  }   
-		});
-
-		return data
-	}
-
 
 	$('.display_animal').click(() => 
 		{
