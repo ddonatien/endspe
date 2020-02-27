@@ -51,7 +51,7 @@ function loadCSV(url) {
 
 jQuery($ => {
 
-	var phyloDatas = loadCSV("data/phylo.csv");
+	var phyloDatas = loadCSV("https://github.com/ddonatien/endspe/blob/master/app/data/phylo.csv");
 	console.log(phyloDatas);
 
 	$('.display_animal').click(() => 
