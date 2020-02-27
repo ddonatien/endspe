@@ -2,24 +2,40 @@
 jQuery($ => {
 
 	function loadCSV(url) {
-    d3.csv(url, function(error, data) {
-      if (error) console.log(error);
-      else {
-          var array = data.map((d) => d.id);
-          console.log(array);
-      }
-  	})
+		var rawItems = [];
+		var items = [];
+
+	    d3.csv(url, function(error, data) {
+			if (error) console.log(error);
+			else {
+				var array = data.map((d) => d.id);
+
+				array.forEach((d) => {
+					if (rawItems.indexOf(d) == -1) {
+						rawItems.push(d);
+					}
+				})
+			}
+
+		    rawItems.forEach((d) => {
+		    	l = d.split('.').reverse();
+
+		    	for (i in l) {
+		    		if (items.indexOf(l[i]) == -1) {
+						items.push(l[i]);
+					}
+					else {
+						break;
+					}
+		    	}
+		    });
+	  	});
+
+	    console.log(items);
+	  	return items;
 	}
 
-	// Avoid CORS matters
-	const proxyurl = "https://cors-anywhere.herokuapp.com/";
-	const url = 'https://github.com/ddonatien/endspe/blob/master/app/data/phylo.csv';
-	fetch(proxyurl + url)
-	.then(response => loadCSV(proxyurl+url))
-	.catch(() => console.log("Can’t access " + url + " response."))
-
-	var items = ["Animalia", "PLANTAE", "CHORDATA"];
-	//phyloItems.forEach(item => items.push(item))
+	var items = loadCSV('https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo.csv');
 
 	new Autocomplete('#autocomplete', {
 	  search: input => {
