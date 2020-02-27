@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css">
   <!--<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>-->
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -73,7 +74,11 @@
           <ul class="menu-list">
             <li><a class="#">Choose branch</a></li>
             <li><a class="#">Filter by imperilment</a></li>
-            <li><a class="#">Search species</a></li>
+            <div id="autocomplete" class="autocomplete">
+              <input class="autocomplete-input" placeholder="Search species or rank">
+              <ul class="autocomplete-result-list"></ul>
+            </div>
+
           </ul>
         </nav>
       </aside>
