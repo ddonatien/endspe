@@ -21,7 +21,7 @@ jQuery($ => {
 		    	l = d.split('.').reverse();
 
 		    	for (i in l) {
-		    		if (items.indexOf(l[i]) == -1) {
+		    		if (items.indexOf(l[i]) == -1 && l[i] != '') {
 						items.push(l[i]);
 					}
 					else {
@@ -29,6 +29,10 @@ jQuery($ => {
 					}
 		    	}
 		    });
+
+		    for (i in items) {
+		    	items[i] = items[i][0].toUpperCase() + items[i].substring(1).toLowerCase();
+		    }
 	  	});
 
 	    console.log(items);
