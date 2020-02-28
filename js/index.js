@@ -35,7 +35,6 @@ jQuery($ => {
 		    }
 	  	});
 
-	    console.log(items);
 	  	return items;
 	}
 
@@ -61,7 +60,10 @@ jQuery($ => {
 	    return items1.concat(items2)
 	  },
 	  onSubmit: result => {
+      d3.select("#thlevel").style("visibility", "hidden");
+      d3.select("#thlevel").select('svg').html('');
 	  	$("#wiki").empty();
+      $("#illustration").attr("src", '');
 
     	const Http = new XMLHttpRequest();
 
@@ -72,54 +74,62 @@ jQuery($ => {
 	    Http.send();
 
 	    Http.onreadystatechange = (e) => {
-			let pageTitle = Http.response[1][0];
-			let wikiUrl = Http.response[3][0];
-			let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
-			Http.open("GET", url, true);
-			Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-			Http.responseType = 'json';
-			Http.send();
+        let pageTitle = Http.response[1][0];
+        console.log(Http.response);
+        console.log(pageTitle);
+        if (pageTitle != 'Undefined') {
+          let wikiUrl = Http.response[3][0];
+          let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
+          Http.open("GET", url, true);
+          Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+          Http.responseType = 'json';
+          Http.send();
 
-			Http.onreadystatechange = (e) => {
-		        let pages = Http.response.query.pages;
-		        let key = Object.keys(pages)[0];
-		        if (key) {
-					if (pages[key].extract) {
-						$("#wiki").append(pages[key].extract);
-					}
-					else {
-						$("#wiki").append("<p>No wikipedia extract :(</p><br>");
-					}
-					$("#wiki").append("<a href='" + wikiUrl + "'>Wiki link</a>");
+          Http.onreadystatechange = (e) => {
+                let pages = Http.response.query.pages;
+                let key = Object.keys(pages)[0];
+                if (key) {
+              if (pages[key].extract) {
+                $("#wiki").append(pages[key].extract);
+              }
+              else {
+                $("#wiki").append("<p>No wikipedia extract :(</p><br>");
+              }
+              $("#wiki").append("<a href='" + wikiUrl + "'>Wiki link</a>");
 
-					let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=images&titles=${pageTitle}&format=json`;
-					Http.open("GET", url, true);
-					Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-					Http.responseType = 'json';
-					Http.send();
+              let url=`https://www.wikidata.org/w/api.php?origin=*&action=wbgetentities&format=json&sites=enwiki&props=claims&titles=${pageTitle}`;
+              Http.open("GET", url, true);
+              Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+              Http.responseType = 'json';
+              Http.send();
 
-					Http.onreadystatechange = (e) => {
-						let images = Http.response.query.pages[key].images[0].title.replace('File:', '');
-						let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
-						Http.open("GET", url, true);
-						Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-						Http.responseType = 'json';
-						Http.send();
+              Http.onreadystatechange = (e) => {
+                let key = Object.keys(Http.response.entities)[0];
+                let images = Http.response.entities[key].claims.P18[0].mainsnak.datavalue.value;
+                let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
+                Http.open("GET", url, true);
+                Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                Http.responseType = 'json';
+                Http.send();
 
-						Http.onreadystatechange = (e) => {
-							let ipages = Http.response.query.pages;
-							let ikey = Object.keys(ipages)[0];
-							let imurl = ipages[ikey].imageinfo[0].url;
-							if (imurl) {
-								$("#illustration").attr("src", imurl);
-		            		}
-		           		}
-		          	}
-	        	}
-		        else {
-		          $("#wiki").append("<p>No wikipedia page found :(</p>");
-		        }
-			}
+                Http.onreadystatechange = (e) => {
+                  let ipages = Http.response.query.pages;
+                  let ikey = Object.keys(ipages)[0];
+                  let imurl = ipages[ikey].imageinfo[0].url;
+                  if (imurl) {
+                    $("#illustration").attr("src", imurl);
+                        }
+                      }
+                    }
+                }
+                else {
+                  $("#wiki").append("<p>No wikipedia page found :(</p>");
+                }
+          }
+        }
+        else {
+          $("#wiki").append("<p>No wikipedia page found :(</p>");
+        }
 	    }}
 	})
 

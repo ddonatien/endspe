@@ -63,8 +63,10 @@ function phyloTree(url) {
 
           cluster(root);
 
+          // rdata = root.descendants().filter((d) => d.depth < 3)
+          rdata = root.descendants()
           var link = g.selectAll(".link")
-              .data(root.descendants().slice(1))
+              .data(rdata.slice(1))
               .enter().append("path")
               .attr("class", "link")
               .attr("d", function(d) {
@@ -105,7 +107,7 @@ function phyloTree(url) {
               });
 
           var node = g.selectAll(".node")
-              .data(root.descendants())
+              .data(rdata)
               .enter().append("g")
               .attr("class", function(d) { return "node" + (d.children ? " node--internal" : " node--leaf"); })
               .attr("transform", function(d) { return "translate(" + project(d.x, d.y) + ")"; })
@@ -139,10 +141,14 @@ function phyloTree(url) {
               })
               .on('click', function(d) {
                 d3.select("#thlevel").style("visibility", "visible");
+                d3.select("#thlevel").select('svg').html('');
                 d3.select("#thlevel").select('svg').append('rect').attr('fill', color(d.data.value)).attr("width", "5vh").attr("height", "1vh");
 
                 // Load wiki data
                 let split = d.id.split('.')
+                if (split[split.length - 2]) {
+                  let url=`https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&prop=extracts&exintro=&search=${split[split.length - 1]}+${split[split.length - 2]}&format=json`;
+                }
                 let url=`https://en.wikipedia.org/w/api.php?origin=*&action=opensearch&prop=extracts&exintro=&search=${split[split.length - 1]}&format=json`;
                 Http.open("GET", url, true);
                 Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
@@ -151,61 +157,56 @@ function phyloTree(url) {
 
                 Http.onreadystatechange = (e) => {
                   let pageTitle = Http.response[1][0];
-                  let wikiUrl = Http.response[3][0];
-                  let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
-                  Http.open("GET", url, true);
-                  Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-                  Http.responseType = 'json';
-                  Http.send();
+                  if (pageTitle != 'Undefined') {
+                    let wikiUrl = Http.response[3][0];
+                    let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&exintro=&titles=${pageTitle}&format=json`;
+                    Http.open("GET", url, true);
+                    Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                    Http.responseType = 'json';
+                    Http.send();
 
-                  Http.onreadystatechange = (e) => {
-                    let pages = Http.response.query.pages;
-                    let key = Object.keys(pages)[0];
-                    if (key) {
-                      if (pages[key].extract) {
-                        d3.select("#wiki").html(pages[key].extract);
-                      } else {
-                        d3.select("#wiki").html("No wikipedia extract :( <br>");
-                      }
-                      d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
-                    
-                      let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=images&titles=${pageTitle}&format=json`;
-                      Http.open("GET", url, true);
-                      Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-                      Http.responseType = 'json';
-                      Http.send();
+                    Http.onreadystatechange = (e) => {
+                      let pages = Http.response.query.pages;
+                      let key = Object.keys(pages)[0];
 
-                      Http.onreadystatechange = (e) => {
-                        let images = Http.response.query.pages[key].images[0].title.replace('File:', '');
-                        let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
+                      d3.select("#wiki").html('');
+                      if (key) {
+                        if (pages[key].extract) {
+                          d3.select("#wiki").html(pages[key].extract);
+                        } else {
+                          d3.select("#wiki").html("No wikipedia extract :( <br>");
+                        }
+                        d3.select("#wiki").append("a").attr("href", wikiUrl).attr("target", "_blank").html('Wiki link');
+                        let url=`https://www.wikidata.org/w/api.php?origin=*&action=wbgetentities&format=json&sites=enwiki&props=claims&titles=${pageTitle}`;
                         Http.open("GET", url, true);
                         Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
                         Http.responseType = 'json';
                         Http.send();
 
                         Http.onreadystatechange = (e) => {
-                          let ipages = Http.response.query.pages;
-                          let ikey = Object.keys(ipages)[0];
-                          let imurl = ipages[ikey].imageinfo[0].url;
-                          if (imurl) {
-                            d3.select("#illustration").attr("src", imurl);
-                        }
-                        }
-                      }
-                      // Load rationale data
-                      // d3.csv("https://raw.githubusercontent.com/ddonatien/endspe/master/app/data/phylo_plant_threats_spec.csv", function (error, data) {
-                      //   if (error) console.log(error)
+                          let key = Object.keys(Http.response.entities)[0];
+                          let images = Http.response.entities[key].claims.P18[0].mainsnak.datavalue.value;
+                          let url=`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=Image:${images}&format=json&prop=imageinfo&iiprop=url`;
+                          Http.open("GET", url, true);
+                          Http.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                          Http.responseType = 'json';
+                          Http.send();
 
-                      //   let nested = d3.nest()
-                      //                  .key(function(b) { return b.id; })
-                      //                  .map(data);
-                      //   console.log(d.id)
-                      //   console.log(nested["$" + d.id][0].value);
-                      //   d3.select("#ratio").html(nested["$" + d.id][0].value);
-                      // });
-                    } else {
-                      d3.select("#wiki").html("No wikipedia page found :(");
+                          Http.onreadystatechange = (e) => {
+                            let ipages = Http.response.query.pages;
+                            let ikey = Object.keys(ipages)[0];
+                            let imurl = ipages[ikey].imageinfo[0].url;
+                            if (imurl) {
+                              d3.select("#illustration").attr("src", imurl);
+                          }
+                          }
+                        }
+                      } else {
+                        d3.select("#wiki").html("No wikipedia page found :(");
+                      }
                     }
+                  } else {
+                    d3.select("#wiki").html("No wikipedia page found :(");
                   }
                 }
 
